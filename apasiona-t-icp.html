@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apasiona-T® · ICP Prospecting</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+:root{
+  --ap-blue:#2196C9;--ap-orange:#F7931E;--ap-green:#8DC63F;
+  --ap-yellow:#FFF200;--ap-magenta:#EC008C;--ap-accent-dark:#C4007A;
+  --ap-accent-light:#FDE8F4;--ap-accent-xlight:#FEF5FB;--ap-black:#1A1A1A;
+  --ap-apollo:#F05537;--ap-apollo-light:#FEF0ED;--ap-apollo-dark:#BF3D23;
+  --bg:#F7F7F5;--surface:#FFFFFF;--surface2:#F4F4F2;
+  --border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.18);
+  --text:#1A1A1A;--text2:#666;--text3:#999;
+  --radius:8px;--radius-lg:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;}
+
+.page{max-width:980px;margin:0 auto;padding:24px 16px 48px;}
+
+.at-header{background:var(--ap-black);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-radius:var(--radius-lg) var(--radius-lg) 0 0;}
+.at-header-right{color:rgba(255,255,255,0.38);font-size:10px;text-align:right;line-height:1.7;}
+.logo-wrap{display:flex;align-items:center;gap:13px;}
+.logo-text{display:flex;flex-direction:column;}
+.logo-title{font-size:21px;font-weight:700;letter-spacing:0.04em;color:white;line-height:1;}
+.logo-title .reg{font-size:11px;vertical-align:super;color:rgba(255,255,255,0.5);font-weight:400;}
+.logo-reflect{font-size:12px;font-weight:700;letter-spacing:0.04em;color:rgba(255,255,255,0.13);transform:scaleY(-1);line-height:1;margin-top:1px;}
+.logo-tagline{font-size:9px;color:rgba(255,255,255,0.35);font-style:italic;margin-top:4px;}
+.color-strip{height:5px;display:flex;border-radius:0 0 var(--radius-lg) var(--radius-lg);overflow:hidden;margin-bottom:0;}
+.color-strip div{flex:1;}
+
+.at-body{background:var(--surface);border:0.5px solid var(--border);border-top:none;border-radius:0 0 var(--radius-lg) var(--radius-lg);padding:20px 24px 28px;}
+
+.section-hd{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ap-magenta);margin:1.5rem 0 10px;display:flex;align-items:center;gap:8px;}
+.section-hd::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#EC008C30,transparent);}
+.section-hd.orange{color:var(--ap-apollo);}
+.section-hd.orange::after{background:linear-gradient(90deg,#F0553330,transparent);}
+.section-hd:first-child{margin-top:0;}
+
+.panel{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:12px;}
+.panel-alt{background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:12px;}
+
+.steps-guide{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;}
+.step-card{background:var(--surface2);border-radius:var(--radius-lg);padding:14px;display:flex;flex-direction:column;gap:7px;border:0.5px solid var(--border);}
+.step-num{width:24px;height:24px;border-radius:50%;background:var(--ap-apollo);color:white;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-title{font-size:13px;font-weight:600;color:var(--text);}
+.step-desc{font-size:12px;color:var(--text2);line-height:1.55;}
+.step-link{font-size:12px;color:var(--ap-apollo);text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:2px;font-weight:500;}
+.step-link:hover{text-decoration:underline;}
+
+.drop-zone{border:2px dashed var(--border2);border-radius:var(--radius-lg);padding:2.5rem 1rem;text-align:center;cursor:pointer;transition:all 0.15s;background:var(--surface2);}
+.drop-zone:hover,.drop-zone.over{border-color:var(--ap-apollo);background:var(--ap-apollo-light);}
+.drop-zone-icon{font-size:36px;opacity:0.25;display:block;margin-bottom:10px;color:var(--ap-apollo);}
+.drop-zone-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:5px;}
+.drop-zone-sub{font-size:13px;color:var(--text2);line-height:1.6;}
+.drop-zone-sub span{color:var(--ap-apollo);font-weight:500;}
+#fileInput{display:none;}
+
+.import-preview{margin-top:12px;}
+.import-stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.imp-chip{background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-size:12px;color:var(--text2);}
+.imp-chip strong{font-size:18px;font-weight:600;color:var(--text);display:block;line-height:1.2;}
+.imp-chip.ok strong{color:#27500A;}
+.imp-chip.warn strong{color:#633806;}
+.col-map{background:var(--surface2);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px;border:0.5px solid var(--border);}
+.col-map-title{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;}
+.col-map-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:6px 10px;align-items:center;font-size:12px;}
+.col-arrow{color:var(--text3);text-align:center;}
+.col-apollo{background:var(--ap-apollo-light);color:var(--ap-apollo-dark);padding:3px 8px;border-radius:4px;font-family:monospace;font-size:11px;}
+.col-our{background:var(--ap-accent-light);color:var(--ap-accent-dark);padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500;}
+.col-miss{background:#F1EFE8;color:#888;padding:3px 8px;border-radius:4px;font-size:11px;}
+.import-btn{width:100%;padding:12px;font-size:14px;font-weight:600;background:var(--ap-apollo);color:white;border:none;border-radius:var(--radius);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;}
+.import-btn:hover{background:var(--ap-apollo-dark);}
+.import-btn:disabled{opacity:0.45;cursor:not-allowed;}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-grid.full{grid-template-columns:1fr;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field label{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;}
+.field input,.field select,.field textarea{font-size:13px;padding:8px 11px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--surface);color:var(--text);outline:none;transition:border-color 0.15s,box-shadow 0.15s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ap-magenta);box-shadow:0 0 0 3px rgba(236,0,140,0.1);}
+.field textarea{resize:vertical;min-height:64px;line-height:1.5;}
+
+.size-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.pill-btn{font-size:12px;padding:5px 13px;border:1px solid var(--border2);border-radius:999px;background:var(--surface);cursor:pointer;color:var(--text2);transition:all 0.12s;font-family:inherit;}
+.pill-btn:hover{border-color:var(--ap-magenta);color:var(--ap-magenta);}
+.pill-btn.active{background:var(--ap-accent-light);border-color:var(--ap-magenta);color:var(--ap-accent-dark);font-weight:600;}
+
+.tags-input-wrap{border:1px solid var(--border2);border-radius:var(--radius);padding:6px 9px;display:flex;flex-wrap:wrap;gap:5px;min-height:38px;cursor:text;background:var(--surface);}
+.tags-input-wrap:focus-within{border-color:var(--ap-magenta);box-shadow:0 0 0 3px rgba(236,0,140,0.1);}
+.tag-chip{background:var(--ap-accent-light);color:var(--ap-accent-dark);font-size:12px;padding:2px 8px;border-radius:var(--radius);display:flex;align-items:center;gap:4px;}
+.tag-chip .rm{cursor:pointer;opacity:0.5;font-size:13px;line-height:1;}
+.tag-chip .rm:hover{opacity:1;}
+.tags-input-wrap input{border:none;outline:none;background:transparent;font-size:13px;flex:1;min-width:100px;padding:2px 0;color:var(--text);}
+
+.cargo-group-label{font-size:10px;color:var(--ap-magenta);font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin:12px 0 6px;display:flex;align-items:center;gap:8px;}
+.cargo-group-label::after{content:'';flex:1;height:0.5px;background:var(--ap-accent-light);}
+.cargo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:5px;}
+.cargo-option{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;background:var(--surface);transition:all 0.1s;}
+.cargo-option:hover{border-color:var(--ap-magenta);background:var(--ap-accent-xlight);}
+.cargo-option.selected{background:var(--ap-accent-light);border-color:var(--ap-magenta);}
+.cargo-option input[type=checkbox]{accent-color:var(--ap-magenta);width:14px;height:14px;flex-shrink:0;}
+.cargo-option .cl{font-size:12px;color:var(--text);line-height:1.3;cursor:pointer;}
+.cargo-option.selected .cl{color:var(--ap-accent-dark);font-weight:600;}
+.custom-cargo-row{display:flex;gap:8px;margin-top:10px;}
+.custom-cargo-row input{font-size:13px;flex:1;padding:8px 11px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--surface);color:var(--text);outline:none;}
+.custom-cargo-row input:focus{border-color:var(--ap-magenta);box-shadow:0 0 0 3px rgba(236,0,140,0.1);}
+.custom-cargo-row button{padding:0 14px;height:38px;background:var(--ap-accent-xlight);border:1px solid var(--ap-magenta);border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--ap-accent-dark);white-space:nowrap;font-family:inherit;font-weight:500;}
+.custom-cargo-row button:hover{background:var(--ap-accent-light);}
+
+.autosave-bar{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2);padding:5px 0;margin-bottom:4px;}
+.save-dot{width:7px;height:7px;border-radius:50%;background:#3B6D11;flex-shrink:0;transition:background 0.3s;}
+.save-dot.saving{background:#BA7517;}
+
+.summary-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.stat-chip{background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);padding:10px 16px;font-size:12px;color:var(--text2);flex:1;min-width:80px;}
+.stat-chip strong{font-size:22px;font-weight:600;color:var(--text);display:block;line-height:1.2;}
+.stat-chip.mag strong{color:var(--ap-magenta);}
+.stat-chip.blue strong{color:var(--ap-blue);}
+.stat-chip.green strong{color:var(--ap-green);}
+.stat-chip.apo strong{color:var(--ap-apollo);}
+
+.filter-row{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
+.filter-row input{font-size:13px;flex:1;min-width:100px;padding:7px 11px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--surface);color:var(--text);outline:none;}
+.filter-row input:focus{border-color:var(--ap-magenta);}
+.filter-row select{font-size:13px;width:auto;padding:7px 11px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--surface);color:var(--text);outline:none;}
+.filter-row select:focus{border-color:var(--ap-magenta);}
+
+.table-wrap{border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);margin-bottom:0;}
+.prospect-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;}
+.prospect-table th{text-align:left;font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text2);padding:10px 10px;border-bottom:1px solid var(--border);background:var(--surface2);}
+.prospect-table td{padding:10px 10px;border-bottom:0.5px solid var(--border);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;color:var(--text);}
+.prospect-table tr:last-child td{border-bottom:none;}
+.prospect-table tr:hover td{background:#FAFAF9;}
+.prospect-table td input,.prospect-table td select{font-size:12px;padding:4px 7px;width:100%;height:30px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--text);outline:none;}
+.prospect-table td input:focus,.prospect-table td select:focus{border-color:var(--ap-magenta);box-shadow:0 0 0 2px rgba(236,0,140,0.12);}
+
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:600;white-space:nowrap;}
+.b-yes{background:#EAF3DE;color:#27500A;}
+.b-no{background:#F1EFE8;color:#888;}
+.b-apo{background:var(--ap-apollo-light);color:var(--ap-apollo-dark);}
+.b-man{background:var(--ap-accent-light);color:var(--ap-accent-dark);}
+.link-cell a{color:var(--ap-blue);text-decoration:none;font-size:11px;display:inline-flex;align-items:center;gap:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
+.link-cell a:hover{text-decoration:underline;}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--text3);padding:4px 6px;border-radius:5px;font-size:15px;transition:all 0.1s;}
+.del-btn:hover{color:var(--ap-magenta);background:var(--ap-accent-xlight);}
+
+.add-row-title{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;}
+.add-row{display:grid;grid-template-columns:1.2fr 1.1fr 1.2fr 0.7fr 1.1fr auto;gap:8px;align-items:end;}
+.add-row .field input,.add-row .field select{font-size:13px;}
+.add-btn{padding:0 14px;height:38px;background:var(--ap-magenta);color:white;border:none;border-radius:var(--radius);cursor:pointer;font-size:13px;white-space:nowrap;font-family:inherit;font-weight:600;display:flex;align-items:center;gap:6px;align-self:end;}
+.add-btn:hover{background:var(--ap-accent-dark);}
+
+.action-row{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
+.sec-btn{padding:10px 16px;font-size:13px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);cursor:pointer;color:var(--text);display:inline-flex;align-items:center;gap:6px;font-family:inherit;font-weight:500;transition:all 0.1s;}
+.sec-btn:hover{background:var(--surface);border-color:var(--text2);}
+.sec-btn.danger{color:var(--ap-magenta);}
+.sec-btn.danger:hover{border-color:var(--ap-magenta);background:var(--ap-accent-xlight);}
+
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--text2);font-size:14px;line-height:1.8;}
+.empty-state i{font-size:36px;opacity:0.15;display:block;margin-bottom:12px;color:var(--text);}
+
+.at-footer{text-align:center;font-size:10px;color:var(--text3);margin-top:20px;letter-spacing:0.04em;}
+.at-footer span{color:var(--ap-magenta);}
+
+.toast{position:fixed;bottom:24px;right:24px;background:var(--ap-black);color:white;font-size:13px;padding:12px 18px;border-radius:var(--radius-lg);display:flex;align-items:center;gap:8px;opacity:0;transition:opacity 0.3s,transform 0.3s;pointer-events:none;transform:translateY(8px);z-index:999;box-shadow:0 4px 20px rgba(0,0,0,0.25);}
+.toast.show{opacity:1;transform:translateY(0);}
+
+@media(max-width:600px){
+  .steps-guide,.form-grid,.add-row{grid-template-columns:1fr;}
+  .page{padding:12px 10px 32px;}
+  .at-header{padding:12px 16px;}
+  .at-body{padding:14px 14px 20px;}
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes fi{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.fi{animation:fi 0.2s ease;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="at-header">
+    <div class="logo-wrap">
+      <svg width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" aria-label="Apasiona-T isotipo">
+        <g transform="translate(26,26)">
+          <path d="M-2,-22 Q-18,-18 -20,-2 Q-18,12 -6,18 Q2,20 6,16 Q-4,10 -4,-2 Q-4,-14 4,-20 Z" fill="#2196C9" opacity="0.93"/>
+          <path d="M4,-20 Q18,-16 20,-2 Q18,12 6,18 Q-2,22 -6,18 Q4,12 6,0 Q8,-12 2,-20 Z" fill="#F7931E" opacity="0.93"/>
+          <path d="M-6,18 Q-18,14 -20,-2 Q-20,-14 -10,-20 Q-4,-22 2,-20 Q-6,-12 -6,0 Q-6,12 -2,18 Z" fill="#EC008C" opacity="0.9"/>
+          <path d="M6,0 Q8,12 2,18 Q-2,22 -8,20 Q-2,14 0,4 Q2,-4 6,0 Z" fill="#8DC63F" opacity="0.92"/>
+          <path d="M0,4 Q2,12 -2,18 Q-6,22 -10,20 Q-6,14 -6,6 Q-4,0 0,4 Z" fill="#FFF200" opacity="0.88"/>
+        </g>
+      </svg>
+      <div class="logo-text">
+        <div class="logo-title">APASIONA-T<span class="reg">®</span></div>
+        <div class="logo-reflect">APASIONA-T</div>
+        <div class="logo-tagline">Convertimos tus negocios en pasión...</div>
+      </div>
+    </div>
+    <div class="at-header-right">ICP Prospecting<br>powered by Apollo.io</div>
+  </div>
+  <div class="color-strip">
+    <div style="background:#2196C9"></div>
+    <div style="background:#F7931E"></div>
+    <div style="background:#8DC63F"></div>
+    <div style="background:#FFF200"></div>
+    <div style="background:#EC008C"></div>
+  </div>
+
+  <div class="at-body">
+
+    <div class="section-hd orange" style="margin-top:0"><i class="ti ti-circle-number-1"></i> Cómo obtener prospectos reales de Apollo.io</div>
+    <div class="steps-guide">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-title">Entra a Apollo.io</div>
+        <div class="step-desc">Crea cuenta gratis o inicia sesión. Más de 210 millones de contactos reales y verificados.</div>
+        <a class="step-link" href="https://app.apollo.io" target="_blank"><i class="ti ti-external-link"></i> Abrir Apollo.io</a>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-title">Filtra con tu ICP</div>
+        <div class="step-desc">En <strong>People Search</strong> aplica los cargos, país, tamaño de empresa y sector de tu cliente ideal.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-title">Exporta y sube el CSV</div>
+        <div class="step-desc">Selecciona contactos → <strong>Export to CSV</strong>. Luego arrastra el archivo en la zona de abajo.</div>
+      </div>
+    </div>
+
+    <div class="section-hd orange"><i class="ti ti-upload"></i> Importar CSV de Apollo.io</div>
+    <div class="panel">
+      <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+        <i class="ti ti-file-spreadsheet drop-zone-icon"></i>
+        <div class="drop-zone-title">Arrastra tu CSV de Apollo aquí</div>
+        <div class="drop-zone-sub">o <span>haz clic para seleccionar el archivo</span><br>Mapeo automático de columnas · Sin configuración</div>
+      </div>
+      <input type="file" id="fileInput" accept=".csv">
+      <div id="importPreview"></div>
+    </div>
+
+    <div class="section-hd"><i class="ti ti-sliders"></i> Cargos objetivo (guía para filtrar en Apollo)</div>
+    <div class="panel">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6;padding:10px 12px;background:var(--surface2);border-radius:var(--radius);border:0.5px solid var(--border);">
+        <i class="ti ti-info-circle" style="vertical-align:-2px;color:var(--ap-apollo)"></i> Usa estos cargos como filtros en <strong>Apollo.io → People → Job Title</strong>. Selecciona los que corresponden a tu ICP, luego exporta y sube el CSV.
+      </div>
+      <div id="cargoGroupsWrap"></div>
+      <div class="custom-cargo-row">
+        <input type="text" id="cargoCustom" placeholder="Agregar cargo personalizado…">
+        <button onclick="addCustomCargo()"><i class="ti ti-plus"></i> Agregar</button>
+      </div>
+    </div>
+
+    <div class="section-hd"><i class="ti ti-users"></i> Lista de prospectos</div>
+
+    <div class="autosave-bar">
+      <div class="save-dot" id="saveDot"></div>
+      <span id="saveMsg">Los cambios se guardan automáticamente en tu navegador</span>
+    </div>
+
+    <div class="summary-bar" id="summaryBar" style="display:none"></div>
+
+    <div class="filter-row" id="filterRow" style="display:none">
+      <i class="ti ti-search" style="font-size:16px;color:var(--text3)"></i>
+      <input type="text" id="searchNombre" placeholder="Buscar por nombre…">
+      <input type="text" id="searchEmpresa" placeholder="Buscar por empresa…">
+      <input type="text" id="searchCargo" placeholder="Buscar por cargo…">
+      <input type="text" id="searchPais" placeholder="Buscar por país…">
+      <select id="filterLI">
+        <option value="">LinkedIn: todos</option>
+        <option value="si">Con perfil</option>
+        <option value="no">Sin perfil</option>
+      </select>
+      <select id="filterFuente">
+        <option value="">Fuente: todas</option>
+        <option value="apollo">Apollo.io</option>
+        <option value="manual">Manual</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
+      <div id="tableWrap">
+        <div class="empty-state">
+          <i class="ti ti-planet"></i>
+          Sigue los 3 pasos de arriba para importar<br>prospectos reales desde Apollo.io
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+      <div class="add-row-title"><i class="ti ti-plus" style="vertical-align:-2px"></i> Agregar prospecto manual</div>
+      <div class="add-row">
+        <div class="field"><label>Nombre</label><input type="text" id="np_nombre" placeholder="Nombre Apellido"></div>
+        <div class="field"><label>Empresa</label><input type="text" id="np_empresa" placeholder="Nombre empresa"></div>
+        <div class="field"><label>Cargo</label><select id="np_cargo_sel"></select></div>
+        <div class="field"><label>LinkedIn</label><select id="np_li"><option value="si">Sí</option><option value="no">No</option></select></div>
+        <div class="field"><label>URL LinkedIn</label><input type="text" id="np_url" placeholder="https://linkedin.com/in/…"></div>
+        <button class="add-btn" onclick="addProspect()"><i class="ti ti-plus"></i> Agregar</button>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="sec-btn" onclick="exportXLSX()"><i class="ti ti-file-spreadsheet"></i> Exportar Excel</button>
+      <button class="sec-btn" onclick="exportCSV()"><i class="ti ti-download"></i> Exportar CSV</button>
+      <button class="sec-btn danger" onclick="clearAll()"><i class="ti ti-trash"></i> Limpiar lista</button>
+    </div>
+
+  </div>
+
+  <div class="at-footer"><span>Apasiona-T®</span> SAS &nbsp;·&nbsp; Social Selling &nbsp;·&nbsp; Ventas 4.0 &nbsp;·&nbsp; B2B &nbsp;·&nbsp; apasiona-t.co</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+let prospects=[];
+let saveTimer=null;
+const SK='apasionat_icp_standalone_v1';
+
+const CARGO_GROUPS={
+  'C-Suite':['CEO','COO','CFO','CMO','CTO','Chief Human Resources Officer','Chief Revenue Officer'],
+  'Ventas':['VP Sales','VP of Sales','Sales Director','Director of Sales','Commercial Manager','Key Account Manager','Head of Sales','Business Development Manager'],
+  'Marketing':['Marketing Director','VP Marketing','Marketing Manager','Communications Director','Brand Manager','Growth Manager','Head of Marketing'],
+  'RRHH & Talento':['HR Director','VP Human Resources','HR Manager','Talent Acquisition Manager','Learning & Development Manager','HR Business Partner','Chief People Officer'],
+  'Operaciones':['Operations Director','VP Operations','Operations Manager','Project Manager','Supply Chain Director'],
+  'Tecnología':['IT Director','VP Technology','Systems Manager','Solutions Architect','Digital Transformation Director'],
+  'Finanzas':['Finance Director','VP Finance','Finance Manager','Controller','Head of Finance'],
+  'Dirección General':['General Manager','Managing Director','Founding Partner','President','Executive Director'],
+};
+let allCargos={};
+Object.entries(CARGO_GROUPS).forEach(([g,arr])=>{allCargos[g]=[...arr];});
+let selectedCargos=new Set();
+
+const APOLLO_COL_MAP={
+  empresa:['company','company name','organization','empresa'],
+  cargo:['title','job title','position','cargo'],
+  linkedin:['linkedin url','linkedin','person linkedin url','linkedin profile'],
+  email:['email','email address','correo'],
+  ciudad:['city','ciudad'],
+  pais:['country','país','pais'],
+  sector:['industry','sector'],
+  empleados:['employees','# employees','num employees','company headcount'],
+};
+
+function buildCargoUI(){
+  const wrap=document.getElementById('cargoGroupsWrap');wrap.innerHTML='';
+  Object.entries(allCargos).forEach(([group,cargos])=>{
+    if(!cargos.length)return;
+    const lbl=document.createElement('div');lbl.className='cargo-group-label';lbl.textContent=group;wrap.appendChild(lbl);
+    const grid=document.createElement('div');grid.className='cargo-grid';
+    cargos.forEach((c,i)=>{
+      const uid='cg_'+group.replace(/\W/g,'')+i;
+      const div=document.createElement('div');div.className='cargo-option'+(selectedCargos.has(c)?' selected':'');
+      div.innerHTML=`<input type="checkbox" id="${uid}" ${selectedCargos.has(c)?'checked':''}><label class="cl" for="${uid}">${c}</label>`;
+      div.querySelector('input').addEventListener('change',function(){
+        if(this.checked)selectedCargos.add(c);else selectedCargos.delete(c);
+        div.classList.toggle('selected',this.checked);updateCargoSelect();saveState();
+      });
+      grid.appendChild(div);
+    });
+    wrap.appendChild(grid);
+  });
+  updateCargoSelect();
+}
+
+function addCustomCargo(){
+  const inp=document.getElementById('cargoCustom');const val=inp.value.trim();if(!val)return;
+  if(!allCargos['Personalizados'])allCargos['Personalizados']=[];
+  if(!allCargos['Personalizados'].includes(val))allCargos['Personalizados'].push(val);
+  selectedCargos.add(val);inp.value='';buildCargoUI();saveState();
+}
+document.getElementById('cargoCustom').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addCustomCargo();}});
+
+function updateCargoSelect(){
+  const sel=document.getElementById('np_cargo_sel');const prev=sel.value;
+  sel.innerHTML='<option value="">— Seleccionar cargo —</option>';
+  Object.entries(allCargos).forEach(([g,cargos])=>{
+    if(!cargos.length)return;
+    const og=document.createElement('optgroup');og.label=g;
+    cargos.forEach(c=>{const op=document.createElement('option');op.value=c;op.textContent=c;if(c===prev)op.selected=true;og.appendChild(op);});
+    sel.appendChild(og);
+  });
+  const op=document.createElement('option');op.value='__custom__';op.textContent='+ Otro cargo…';sel.appendChild(op);
+}
+document.getElementById('np_cargo_sel').addEventListener('change',function(){
+  if(this.value==='__custom__'){
+    const v=prompt('Escribe el cargo:');
+    if(v&&v.trim()){if(!allCargos['Personalizados'])allCargos['Personalizados']=[];if(!allCargos['Personalizados'].includes(v.trim())){allCargos['Personalizados'].push(v.trim());buildCargoUI();}this.value=v.trim();}
+    else this.value='';
+  }
+});
+
+const dropZone=document.getElementById('dropZone');
+const fileInput=document.getElementById('fileInput');
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('over');});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('over'));
+dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('over');const f=e.dataTransfer.files[0];if(f)processCSV(f);});
+fileInput.addEventListener('change',e=>{if(e.target.files[0])processCSV(e.target.files[0]);});
+
+function processCSV(file){
+  if(!file.name.endsWith('.csv')){showToast('Solo se aceptan archivos .csv');return;}
+  const reader=new FileReader();
+  reader.onload=e=>parseAndPreview(e.target.result,file.name);
+  reader.readAsText(file,'UTF-8');
+}
+
+function parseCSVLine(line){
+  const result=[];let cur='';let inQ=false;
+  for(let i=0;i<line.length;i++){
+    const ch=line[i];
+    if(ch==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}
+    else if(ch===','&&!inQ){result.push(cur.trim());cur='';}
+    else cur+=ch;
+  }
+  result.push(cur.trim());return result;
+}
+
+function findCol(headers,keys){
+  for(const k of keys){const idx=headers.findIndex(h=>h.toLowerCase().trim()===k.toLowerCase());if(idx>-1)return idx;}
+  for(const k of keys){const idx=headers.findIndex(h=>h.toLowerCase().includes(k.toLowerCase()));if(idx>-1)return idx;}
+  return -1;
+}
+
+function parseAndPreview(csvText,filename){
+  const lines=csvText.split(/\r?\n/).filter(l=>l.trim());
+  if(lines.length<2){showToast('El CSV está vacío');return;}
+  const headers=parseCSVLine(lines[0]);
+  const firstNameIdx=findCol(headers,['first name','first_name','nombre','firstname']);
+  const lastNameIdx=findCol(headers,['last name','last_name','apellido','lastname']);
+  const fullNameIdx=findCol(headers,['full name','full_name','name','nombre completo']);
+  const cols={firstName:firstNameIdx,lastName:lastNameIdx,fullName:fullNameIdx};
+  Object.entries(APOLLO_COL_MAP).forEach(([k,v])=>{cols[k]=findCol(headers,v);});
+  const mapped=[
+    {label:'Nombre',found:cols.firstName>-1||cols.fullName>-1,apollo:cols.firstName>-1?headers[cols.firstName]:cols.fullName>-1?headers[cols.fullName]:'—'},
+    {label:'Empresa',found:cols.empresa>-1,apollo:cols.empresa>-1?headers[cols.empresa]:'—'},
+    {label:'Cargo',found:cols.cargo>-1,apollo:cols.cargo>-1?headers[cols.cargo]:'—'},
+    {label:'LinkedIn URL',found:cols.linkedin>-1,apollo:cols.linkedin>-1?headers[cols.linkedin]:'—'},
+    {label:'Email',found:cols.email>-1,apollo:cols.email>-1?headers[cols.email]:'—'},
+    {label:'País',found:cols.pais>-1,apollo:cols.pais>-1?headers[cols.pais]:'—'},
+  ];
+  const dataRows=lines.slice(1).filter(l=>l.trim());
+  let html=`<div class="import-preview"><div class="col-map"><div class="col-map-title">Columnas detectadas — ${filename}</div><div class="col-map-grid">`;
+  mapped.forEach(m=>{html+=`<span class="col-apollo">${m.apollo}</span><span class="col-arrow">→</span><span class="${m.found?'col-our':'col-miss'}">${m.label}${m.found?'':' (no encontrado)'}</span>`;});
+  html+=`</div></div><div class="import-stats"><div class="imp-chip ok"><strong>${dataRows.length.toLocaleString()}</strong>Contactos en el CSV</div><div class="imp-chip"><strong>${headers.length}</strong>Columnas detectadas</div></div>`;
+  html+=`<button class="import-btn" id="confirmImportBtn"><i class="ti ti-database-import"></i> Importar ${dataRows.length.toLocaleString()} prospectos a la lista</button></div>`;
+  document.getElementById('importPreview').innerHTML=html;
+  document.getElementById('confirmImportBtn').addEventListener('click',()=>doImport(dataRows,cols,headers));
+}
+
+function doImport(dataRows,cols,headers){
+  const btn=document.getElementById('confirmImportBtn');
+  btn.disabled=true;btn.innerHTML='<i class="ti ti-loader" style="animation:spin 1s linear infinite"></i> Importando…';
+  const existingLI=new Set(prospects.map(p=>p.url).filter(Boolean));
+  let added=0,dupes=0;
+  dataRows.forEach(line=>{
+    if(!line.trim())return;
+    const cells=parseCSVLine(line);
+    const get=i=>i>-1&&i<cells.length?(cells[i]||'').trim():'';
+    let nombre='';
+    if(cols.fullName>-1&&get(cols.fullName))nombre=get(cols.fullName);
+    else nombre=(get(cols.firstName)+' '+get(cols.lastName)).trim();
+    const empresa=get(cols.empresa),cargo=get(cols.cargo),liUrl=get(cols.linkedin);
+    const email=get(cols.email),ciudad=get(cols.ciudad),pais=get(cols.pais);
+    const sector=get(cols.sector),empleados=get(cols.empleados);
+    if(!nombre&&!empresa)return;
+    if(liUrl&&existingLI.has(liUrl)){dupes++;return;}
+    if(liUrl)existingLI.add(liUrl);
+    prospects.push({nombre:nombre||'(Sin nombre)',empresa,cargo,li:liUrl?'si':'no',activo:'nd',url:liUrl,email,ciudad,pais,sector,empleados,fuente:'apollo'});
+    added++;
+  });
+  renderTable();saveState();
+  document.getElementById('importPreview').innerHTML=`<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><div class="imp-chip ok"><strong>${added}</strong>Importados</div>${dupes?`<div class="imp-chip warn"><strong>${dupes}</strong>Duplicados omitidos</div>`:''}</div>`;
+  dropZone.innerHTML=`<i class="ti ti-circle-check drop-zone-icon" style="opacity:0.6;color:var(--ap-green)"></i><div class="drop-zone-title">¡Importación completa!</div><div class="drop-zone-sub">Arrastra otro CSV para agregar más prospectos</div>`;
+  fileInput.value='';
+  showToast(`✓ ${added} prospectos importados correctamente`);
+}
+
+function triggerAutosave(){
+  const dot=document.getElementById('saveDot');const msg=document.getElementById('saveMsg');
+  dot.className='save-dot saving';msg.textContent='Guardando…';
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{saveState();dot.className='save-dot';msg.textContent='Guardado · '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});},700);
+}
+
+function saveState(){
+  try{
+    const data={prospects,cargosSelected:[...selectedCargos],cargosCustom:allCargos['Personalizados']||[],ts:Date.now()};
+    localStorage.setItem(SK,JSON.stringify(data));
+    document.getElementById('saveDot').className='save-dot';
+    document.getElementById('saveMsg').textContent='Guardado · '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){}
+}
+
+function loadState(){
+  try{
+    const raw=localStorage.getItem(SK);
+    if(!raw){buildCargoUI();return;}
+    const data=JSON.parse(raw);
+    if(data.prospects)prospects=data.prospects;
+    if(data.cargosCustom&&data.cargosCustom.length)allCargos['Personalizados']=data.cargosCustom;
+    if(data.cargosSelected)data.cargosSelected.forEach(c=>selectedCargos.add(c));
+    if(data.ts)document.getElementById('saveMsg').textContent='Cargado · guardado el '+new Date(data.ts).toLocaleDateString('es-CO',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+  }catch(e){}
+  buildCargoUI();renderTable();
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.innerHTML=`<i class="ti ti-check"></i> ${msg}`;
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+function renderTable(){
+  const sN=(document.getElementById('searchNombre')?.value||'').toLowerCase();
+  const sE=(document.getElementById('searchEmpresa')?.value||'').toLowerCase();
+  const sC=(document.getElementById('searchCargo')?.value||'').toLowerCase();
+  const sP=(document.getElementById('searchPais')?.value||'').toLowerCase();
+  const fLI=document.getElementById('filterLI')?.value||'';
+  const fF=document.getElementById('filterFuente')?.value||'';
+  const filtered=prospects.filter(p=>{
+    if(sN&&!(p.nombre||'').toLowerCase().includes(sN))return false;
+    if(sE&&!(p.empresa||'').toLowerCase().includes(sE))return false;
+    if(sC&&!(p.cargo||'').toLowerCase().includes(sC))return false;
+    if(sP&&!(p.pais||'').toLowerCase().includes(sP))return false;
+    if(fLI&&p.li!==fLI)return false;
+    if(fF&&p.fuente!==fF)return false;
+    return true;
+  });
+  const wrap=document.getElementById('tableWrap');
+  if(!prospects.length){
+    wrap.innerHTML='<div class="empty-state"><i class="ti ti-planet"></i>Sigue los 3 pasos de arriba para importar<br>prospectos reales desde Apollo.io</div>';
+    document.getElementById('summaryBar').style.display='none';
+    document.getElementById('filterRow').style.display='none';
+    return;
+  }
+  document.getElementById('filterRow').style.display='flex';
+  const bar=document.getElementById('summaryBar');bar.style.display='flex';
+  bar.innerHTML=`
+    <div class="stat-chip mag"><strong>${prospects.length}</strong>Total</div>
+    <div class="stat-chip blue"><strong>${prospects.filter(p=>p.li==='si').length}</strong>Con LinkedIn</div>
+    <div class="stat-chip apo"><strong>${prospects.filter(p=>p.fuente==='apollo').length}</strong>De Apollo</div>
+    <div class="stat-chip green"><strong>${prospects.filter(p=>p.email).length}</strong>Con email</div>
+    <div class="stat-chip"><strong>${filtered.length}</strong>Filtrados</div>`;
+  if(!filtered.length){
+    wrap.innerHTML='<div class="empty-state" style="padding:1.5rem"><i class="ti ti-search" style="font-size:22px"></i>Sin resultados para los filtros actuales</div>';
+    return;
+  }
+  const cargoOpts=Object.values(allCargos).flat().map(c=>`<option value="${c}">${c}</option>`).join('');
+  const rows=filtered.map(p=>{
+    const oi=prospects.indexOf(p);
+    const ubicacion=[p.ciudad,p.pais].filter(Boolean).join(', ');
+    const liBadge=p.li==='si'?'<span class="badge b-yes"><i class="ti ti-check"></i> Sí</span>':'<span class="badge b-no">No</span>';
+    const fuenteBadge=p.fuente==='apollo'?'<span class="badge b-apo"><i class="ti ti-database"></i> Apollo</span>':'<span class="badge b-man"><i class="ti ti-pencil"></i> Manual</span>';
+    const linkCell=p.li==='si'&&p.url?`<div class="link-cell"><a href="${p.url.startsWith('http')?p.url:'https://'+p.url}" target="_blank"><i class="ti ti-brand-linkedin"></i>${(p.url||'').replace(/https?:\/\/(www\.)?/,'').substring(0,26)}</a></div>`:'<span style="color:var(--text3);font-size:11px">—</span>';
+    const emailCell=p.email?`<span style="font-size:11px;color:var(--ap-blue)">${p.email.substring(0,22)}${p.email.length>22?'…':''}</span>`:'<span style="color:var(--text3);font-size:11px">—</span>';
+    return `<tr class="fi">
+      <td style="width:13%"><input type="text" value="${(p.nombre||'').replace(/"/g,'&quot;')}" oninput="updateField(${oi},'nombre',this.value)"></td>
+      <td style="width:14%"><input type="text" value="${(p.empresa||'').replace(/"/g,'&quot;')}" oninput="updateField(${oi},'empresa',this.value)"></td>
+      <td style="width:16%"><select onchange="updateField(${oi},'cargo',this.value)"><option value="${(p.cargo||'')}" selected>${p.cargo||'—'}</option>${cargoOpts}</select></td>
+      <td style="width:11%"><span style="font-size:11px;color:var(--text2)">${ubicacion||'—'}</span></td>
+      <td style="width:7%">${liBadge}</td>
+      <td style="width:18%">${linkCell}</td>
+      <td style="width:14%">${emailCell}</td>
+      <td style="width:5%">${fuenteBadge}</td>
+      <td style="width:2%"><button class="del-btn" onclick="delProspect(${oi})" title="Eliminar"><i class="ti ti-trash"></i></button></td>
+    </tr>`;
+  }).join('');
+  wrap.innerHTML=`<table class="prospect-table"><thead><tr><th>Nombre</th><th>Empresa</th><th>Cargo</th><th>Ubicación</th><th>LI</th><th>LinkedIn URL</th><th>Email</th><th>Fuente</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function updateField(i,field,value){if(i<0||i>=prospects.length)return;prospects[i][field]=value;triggerAutosave();}
+function addProspect(){
+  const nombre=document.getElementById('np_nombre').value.trim();
+  const empresa=document.getElementById('np_empresa').value.trim();
+  const cargo=document.getElementById('np_cargo_sel').value;
+  if(!nombre){alert('El nombre es obligatorio');return;}
+  const li=document.getElementById('np_li').value;
+  const url=document.getElementById('np_url').value.trim();
+  prospects.push({nombre,empresa,cargo,li,activo:'nd',url:li==='si'?url:'',fuente:'manual'});
+  ['np_nombre','np_empresa','np_url'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('np_cargo_sel').value='';
+  renderTable();saveState();
+}
+function delProspect(i){if(!confirm('¿Eliminar este prospecto?'))return;prospects.splice(i,1);renderTable();saveState();}
+function clearAll(){if(!confirm('¿Limpiar toda la lista? Esta acción no se puede deshacer.'))return;prospects=[];renderTable();saveState();}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  setTimeout(()=>{
+    ['searchNombre','searchEmpresa','searchCargo','searchPais'].forEach(id=>{document.getElementById(id)?.addEventListener('input',renderTable);});
+    ['filterLI','filterFuente'].forEach(id=>{document.getElementById(id)?.addEventListener('change',renderTable);});
+  },100);
+  loadState();
+});
+
+function exportXLSX(){
+  if(!prospects.length){alert('No hay prospectos para exportar.');return;}
+  const wsData=[['Nombre','Empresa','Cargo','Ciudad','País','Sector','Empleados','LinkedIn','URL LinkedIn','Email','Fuente'],...prospects.map(p=>[p.nombre,p.empresa||'',p.cargo||'',p.ciudad||'',p.pais||'',p.sector||'',p.empleados||'',p.li==='si'?'Sí':'No',p.url||'',p.email||'',p.fuente==='apollo'?'Apollo.io':'Manual'])];
+  const wb=XLSX.utils.book_new();
+  const ws=XLSX.utils.aoa_to_sheet(wsData);
+  ws['!cols']=[{wch:24},{wch:26},{wch:28},{wch:14},{wch:14},{wch:18},{wch:10},{wch:10},{wch:38},{wch:28},{wch:10}];
+  XLSX.utils.book_append_sheet(wb,ws,'Prospectos');
+  XLSX.writeFile(wb,'Prospectos_ApasionaT_'+new Date().toISOString().slice(0,10)+'.xlsx');
+}
+function exportCSV(){
+  if(!prospects.length){alert('No hay prospectos para exportar.');return;}
+  const rows=[['Nombre','Empresa','Cargo','Ciudad','País','LinkedIn','URL','Email','Fuente'],...prospects.map(p=>[p.nombre,p.empresa||'',p.cargo||'',p.ciudad||'',p.pais||'',p.li==='si'?'Sí':'No',p.url||'',p.email||'',p.fuente])];
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'}));
+  a.download='Prospectos_ApasionaT.csv';a.click();
+}
+</script>
+</body>
+</html>
